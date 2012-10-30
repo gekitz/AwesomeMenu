@@ -11,6 +11,7 @@
 @implementation AppDelegate
 
 @synthesize window = _window;
+@synthesize menu = _menu;
 
 - (void)dealloc
 {
@@ -76,7 +77,19 @@
     [starMenuItem8 release];
     [starMenuItem9 release];
     
-    AwesomeMenu *menu = [[AwesomeMenu alloc] initWithFrame:self.window.bounds menus:menus];
+    _menu = [[AwesomeMenu alloc] initWithFrame:self.window.bounds menus:menus];
+    _menu.delegate = self;
+
+    //create a custom control
+    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(130, 200, 60, 60)];
+    btn.backgroundColor = [UIColor greenColor];
+    [btn setShowsTouchWhenHighlighted:YES];
+    
+    //important add the control to the superview before you add the menu
+    [self.window addSubview:btn];
+    [_menu registerCenterButton:btn];
+    
+    [btn release];
     
 	// customize menu
 	/*
@@ -88,9 +101,6 @@
 	menu.nearRadius = 50.0f;
 	*/
 	
-    menu.delegate = self;
-    [self.window addSubview:menu];
-    [menu release];
     
     [self.window makeKeyAndVisible];
     return YES;
